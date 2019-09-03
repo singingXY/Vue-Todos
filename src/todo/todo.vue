@@ -7,8 +7,17 @@
       placeholder="接下来要做什么？"
       @keyup.enter="addTodo"
     />
-    <Item :todo="todo" v-for="todo in todos" :key="todo.id" @del="deleteTodo" />
-    <tabs :filter="filter"></tabs>
+    <Item
+      :todo="todo"
+      v-for="todo in filteredTodos"
+      :key="todo.id"
+      @del="deleteTodo"
+    />
+    <tabs
+      :filter="filter"
+      :todos="todos"
+      @toggle="toggleFilter"
+    />
   </div>
 </template>
 
@@ -27,6 +36,19 @@ export default {
     Item,
     Tabs
   },
+  computed: {
+    filteredTodos () {
+      if (this.filter === 'all') {
+        return this.todos
+      }
+      const completed = this.filter === 'completed'
+      // 目的是把字符串转为一个true或fault的状态
+      // filter返回true则显示，返回fault则不显示
+      return this.todos.filter(
+        todo => completed === todo.completed
+      )
+    }
+  },
   methods: {
     addTodo (e) {
       this.todos.unshift({
@@ -37,7 +59,13 @@ export default {
       e.target.value = ''
     },
     deleteTodo (id) {
-      this.todos.splice(this.todos.findIndex(todo => todo.id === id), 1)
+      this.todos.splice(
+        this.todos.findIndex(todo => todo.id === id),
+        1
+      )
+    },
+    toggleFilter (state) {
+      this.filter = state
     }
   }
 }
