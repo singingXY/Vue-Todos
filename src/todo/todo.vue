@@ -17,6 +17,7 @@
       :filter="filter"
       :todos="todos"
       @toggle="toggleFilter"
+      @clearAllCompleted="clearAllCompleted"
     />
   </div>
 </template>
@@ -51,11 +52,14 @@ export default {
   },
   methods: {
     addTodo (e) {
-      this.todos.unshift({
-        id: id++,
-        content: e.target.value.trim(),
-        completed: false
-      })
+      // unshift() 方法可向数组的开头添加一个或更多元素
+      if (e.target.value) {
+        this.todos.unshift({
+          id: id++,
+          content: e.target.value.trim(),
+          completed: false
+        })
+      }
       e.target.value = ''
     },
     deleteTodo (id) {
@@ -66,6 +70,11 @@ export default {
     },
     toggleFilter (state) {
       this.filter = state
+    },
+    clearAllCompleted () {
+      this.todos = this.todos.filter(
+        todo => !todo.completed
+      )
     }
   }
 }
