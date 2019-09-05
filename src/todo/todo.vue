@@ -96,5 +96,13 @@ export default {
   padding: 6px;
   border: 0;
   padding: 16px 16px 16px 60px;
+  background: #fff url('../assets/images/jia.svg') no-repeat
+    20px center;
+}
+@media screen and (max-width: 600px) {
+  .real-app {
+    width: calc(100% - 20px);
+    margin: 0 10px;
+  }
 }
 </style>
