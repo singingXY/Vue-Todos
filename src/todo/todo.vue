@@ -25,17 +25,39 @@
 <script>
 import Item from './item'
 import Tabs from './tabs'
-let id = 0
+var todoStorage = {
+  fetch: function () {
+    var todos = JSON.parse(
+      localStorage.getItem('todos') || '[]'
+    )
+    todos.forEach(function (todo, index) {
+      todo.id = index
+    })
+    todoStorage.uid = todos.length
+    return todos
+  },
+  save: function (todos) {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }
+}
 export default {
   data () {
     return {
-      todos: [],
+      todos: todoStorage.fetch(),
       filter: 'all'
     }
   },
   components: {
     Item,
     Tabs
+  },
+  watch: {
+    todos: {
+      handler: function (todo) {
+        todoStorage.save(todo)
+      },
+      deep: true // 是否深度监听,如todo.completed
+    }
   },
   computed: {
     filteredTodos () {
@@ -52,14 +74,14 @@ export default {
   },
   methods: {
     addTodo (e) {
-      // unshift() 方法可向数组的开头添加一个或更多元素
-      if (e.target.value) {
-        this.todos.unshift({
-          id: id++,
-          content: e.target.value.trim(),
-          completed: false
-        })
+      if (!e.target.value) {
+        return
       }
+      this.todos.push({
+        id: todoStorage.uid++,
+        content: e.target.value.trim(),
+        completed: false
+      })
       e.target.value = ''
     },
     deleteTodo (id) {
