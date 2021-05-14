@@ -1,24 +1,8 @@
 <template>
   <div class="real-app">
-    <input
-      type="text"
-      class="add-input"
-      autofocus
-      placeholder="接下来要做什么？"
-      @keyup.enter="addTodo"
-    />
-    <Item
-      :todo="todo"
-      v-for="todo in filteredTodos"
-      :key="todo.id"
-      @del="deleteTodo"
-    />
-    <tabs
-      :filter="filter"
-      :todos="todos"
-      @toggle="toggleFilter"
-      @clearAllCompleted="clearAllCompleted"
-    />
+    <input type="text" class="add-input" autofocus placeholder="接下来要做什么？" @keyup.enter="addTodo" />
+    <Item :todo="todo" v-for="todo in filteredTodos" :key="todo.id" @del="deleteTodo" />
+    <tabs :filter="filter" :todos="todos" @toggle="toggleFilter" @clearAllCompleted="clearAllCompleted" />
   </div>
 </template>
 
@@ -26,22 +10,20 @@
 import Item from './item'
 import Tabs from './tabs'
 var todoStorage = {
-  fetch: function () {
-    var todos = JSON.parse(
-      localStorage.getItem('todos') || '[]'
-    )
-    todos.forEach(function (todo, index) {
+  fetch: function() {
+    var todos = JSON.parse(localStorage.getItem('todos') || '[]')
+    todos.forEach(function(todo, index) {
       todo.id = index
     })
     todoStorage.uid = todos.length
     return todos
   },
-  save: function (todos) {
+  save: function(todos) {
     localStorage.setItem('todos', JSON.stringify(todos))
   }
 }
 export default {
-  data () {
+  data() {
     return {
       todos: todoStorage.fetch(),
       filter: 'all'
@@ -53,27 +35,25 @@ export default {
   },
   watch: {
     todos: {
-      handler: function (todo) {
+      handler: function(todo) {
         todoStorage.save(todo)
       },
       deep: true // 是否深度监听,如todo.completed
     }
   },
   computed: {
-    filteredTodos () {
+    filteredTodos() {
       if (this.filter === 'all') {
         return this.todos
       }
       const completed = this.filter === 'completed'
       // 目的是把字符串转为一个true或fault的状态
       // filter返回true则显示，返回fault则不显示
-      return this.todos.filter(
-        todo => completed === todo.completed
-      )
+      return this.todos.filter((todo) => completed === todo.completed)
     }
   },
   methods: {
-    addTodo (e) {
+    addTodo(e) {
       if (!e.target.value) {
         return
       }
@@ -84,19 +64,17 @@ export default {
       })
       e.target.value = ''
     },
-    deleteTodo (id) {
+    deleteTodo(id) {
       this.todos.splice(
-        this.todos.findIndex(todo => todo.id === id),
+        this.todos.findIndex((todo) => todo.id === id),
         1
       )
     },
-    toggleFilter (state) {
+    toggleFilter(state) {
       this.filter = state
     },
-    clearAllCompleted () {
-      this.todos = this.todos.filter(
-        todo => !todo.completed
-      )
+    clearAllCompleted() {
+      this.todos = this.todos.filter((todo) => !todo.completed)
     }
   }
 }
@@ -118,8 +96,7 @@ export default {
   padding: 6px;
   border: 0;
   padding: 16px 16px 16px 60px;
-  background: #fff url('../assets/images/jia.svg') no-repeat
-    20px center;
+  background: #fff url('../assets/images/jia.svg') no-repeat 20px center;
 }
 @media screen and (max-width: 600px) {
   .real-app {
