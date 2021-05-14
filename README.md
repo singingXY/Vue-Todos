@@ -1,24 +1,22 @@
-# vue-todos
+[在线访问地址](https://singingxy.github.io/Vue-Todos/)
 
-## Project setup
-```
+# todos
+
+> A Vue.js project
+
+## Build Setup
+
+``` bash
+# clone repo
+git clone git@github.com:singingXY/Vue-Todos.git
+
+# install dependencies
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
+# serve with hot reload at localhost:8080
 npm run serve
-```
 
-### Compiles and minifies for production
-```
+# build for production with minification
 npm run build
-```
 
-### Lints and fixes files
 ```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
